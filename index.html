@@ -15,7 +15,7 @@
         h1 {
             text-align: center;
         }
-        form {
+        .todo {
             width: 320px;
             margin: 0 auto;
             display: flex;
@@ -24,14 +24,14 @@
             margin-top: 10px;
             margin-bottom: 20px;
         }
-        input {
+        .todo input {
             all: unset;
             padding: 10px;
             border: 2px solid #0071E3;
             border-radius: 10px;
             width: 100%;
         }
-        form button {
+        .todo  button {
             all: unset;
             padding: 10px;   
             background-color: #0071E3;
@@ -77,20 +77,131 @@
             align-items: center;
             padding: 10px;
         }
+        .modal {
+            width: 500px;
+            padding: 50px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            /* box-shadow: 0 10px 15px 0 #ffffff; */
+        }
+
+        .save {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: #1500ff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .inp {
+            padding: 10px;
+            border-radius: 10px;
+            width: 200px;
+            /* justify-self: center; */
+        }
+
+        .btn {
+            display: flex;
+            justify-content: end;
+            align-items: start;
+        }
+
+        .close {
+            padding: 10px;
+            border: none;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            background: #b5b5b5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .bg {
+            position: absolute;
+            background-color: #5f5f5f;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* display: none; */
+            opacity: 0.5;
+            z-index: 1;
+
+        }
+
+        .modal {
+            position: absolute;
+            z-index: 99;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            background-color: #fff;
+        }
+
+        .body {
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: center;
+        }
+        .window {
+            display:  none;
+        }
+        .line{
+            text-decoration: line-through 2px solid red;
+        }
+        .isDone{
+            display: flex;
+            flex-direction: row;
+            width: 50px;
+            margin: 0 auto;
+            gap: 10px;
+        }
+        .check{
+            
+        }
     </style>
     <title>Document</title>
 </head>
 
 <body>
     <h1>Todo List</h1>
-    <form name="todo" >
+    <form class="todo" name="todo" >
         <input type="text" name="title">
+        <input type="text" name="time">
         <button>add</button>
     </form>
     <div class="container">
        
     </div>
-    
+    <div class="window">
+        <div class="bg" data-close></div>
+        <form name="modal" class="modal">
+            <div class="btn">
+                <button data-close class="close">X</button>
+            </div>
+            <div class="body">
+                <input type="text" name="title" class="inp">
+            </div>
+            <div class="footer">
+                <button type="submit" class="save" data-close>Save</button>
+            </div>
+            <div class="isDone">
+                <p>Done</p>
+                <input checked class="check" type="checkbox">
+            </div>
+        </form>
+
+    </div>
     <script src="./index.js"></script>
 </body>
 

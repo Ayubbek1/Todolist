@@ -1,5 +1,6 @@
 let form = document.forms.todo
 let container = document.querySelector('.container')
+let modal = document.querySelector(".window")
 let todos = []
 form.onsubmit = (e) => {
     e.preventDefault();
@@ -10,9 +11,9 @@ form.onsubmit = (e) => {
         id: Math.random(),
         title: target.firstElementChild.value,
         isDone: false,
-        time: new Date().getHours() + ":" + new Date().getMinutes()
+        time: target.lastElementChild.previousSibling.value
     }
-
+    console.log(target.lastElementChild.previousSibling.value);
     if(todo.title&&todo.title.trim(" ").length!==0) {
         todos.push(todo)
         form.reset()
@@ -22,8 +23,9 @@ form.onsubmit = (e) => {
     }
     console.log(todo.title.trim(" ").length);
 }
-
-
+let checkbox = document.querySelector(".check")
+let id
+let tittle
 function reload(arr) {
     container.innerHTML = ""
 
@@ -46,25 +48,24 @@ function reload(arr) {
         mainDiv.append(topDiv, timeSpan)
         topDiv.append(title, removeBtn)
         container.append(mainDiv)
+        title.classList.toggle("line",item.isDone)
         // d
-        
-        title.onclick = () => {
-
-            let mem = title.innerHTML
-            title.innerHTML = prompt(`Именить "${title.innerHTML}" на ...`)
-            item.title = title.innerHTML
-            console.log(item.title);
-            item[title] = title.innerHTML
-            if (item[title].trim(" ").length==0) {
-                title.innerHTML = "Write smth"
-                item.title = "Write smth"
-                title.style.color = "#b30000"
-                mainDiv.style.borderColor = "#b30000"
-            }else{
-                title.style.color = "black"
-                mainDiv.style.borderColor = "#0071E3"
+        title.onclick = () =>{
+            item.isDone = !item.isDone
+            title.classList.toggle("line",item.isDone)
+            checkbox.toggleAttribute("checked",item.isDone)
+            checkbox.onclick = () =>{
+                title.classList.toggle("line",item.isDone)
             }
+        }
 
+
+
+        title.ondblclick = () => {
+            id = item.id
+            modal.style.display = "block"
+            modal.querySelector("input").value = item.title
+            
         }
         
 
@@ -75,6 +76,25 @@ function reload(arr) {
     }
 }
 // arr.indexOf(item),arr
-function del() {
+let modalForm = document.querySelector(".modal")
+reload(todos)
+modalForm.onsubmit = (e) =>{
+    e.preventDefault();
+
+    const {
+        target
+    }=e;
+    let fm = new FormData(target)
+
+    let finded = todos.find(item => item.id===id)
+
     
+    fm.forEach((value,key) => {
+        finded[key] = value
+    });
+    console.log(finded);
+    modal.style.display = "none"
+    reload(todos)
 }
+console.log(checkbox);
+new Date().getHours() + ":" + new Date().getMinutes()
