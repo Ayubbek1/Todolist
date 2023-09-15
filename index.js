@@ -11,9 +11,8 @@ form.onsubmit = (e) => {
         id: Math.random(),
         title: target.firstElementChild.value,
         isDone: false,
-        time: target.lastElementChild.previousSibling.value
+        time: new Date().getHours() + ":" + new Date().getMinutes()  
     }
-    console.log(target.lastElementChild.previousSibling.value);
     if(todo.title&&todo.title.trim(" ").length!==0) {
         todos.push(todo)
         form.reset()
@@ -21,11 +20,11 @@ form.onsubmit = (e) => {
     } else {
         alert('Титул не может быть пустым!')
     }
-    console.log(todo.title.trim(" ").length);
+    
 }
 let checkbox = document.querySelector(".check")
 let id
-let tittle
+let timee
 function reload(arr) {
     container.innerHTML = ""
 
@@ -50,22 +49,34 @@ function reload(arr) {
         container.append(mainDiv)
         title.classList.toggle("line",item.isDone)
         // d
+        let second = false
         title.onclick = () =>{
             item.isDone = !item.isDone
             title.classList.toggle("line",item.isDone)
-            checkbox.toggleAttribute("checked",item.isDone)
-            checkbox.onclick = () =>{
-                title.classList.toggle("line",item.isDone)
+
+        }
+        checkbox.onclick = () =>{
+            if(second){
+                item.isDone = !item.isDone
+                second = false
+                title.classList.remove("line",item.isDone)
+                console.log(1);
+            }else{
+                item.isDone = !item.isDone
+                second=true
+                title.classList.add("line",item.isDone)
+                console.log(2);
             }
         }
 
 
 
         title.ondblclick = () => {
+            timee = item.time
             id = item.id
             modal.style.display = "block"
             modal.querySelector("input").value = item.title
-            
+
         }
         
 
@@ -77,7 +88,10 @@ function reload(arr) {
 }
 // arr.indexOf(item),arr
 let modalForm = document.querySelector(".modal")
+let cur_time = new Date().getHours() + ":" + new Date().getMinutes()
+console.log(modalForm);
 reload(todos)
+let q = modalForm.querySelector(".body").lastElementChild.value
 modalForm.onsubmit = (e) =>{
     e.preventDefault();
 
@@ -88,13 +102,23 @@ modalForm.onsubmit = (e) =>{
 
     let finded = todos.find(item => item.id===id)
 
-    
+    // console.log(target.querySelector(".body").lastElementChild.value.slice(0,2));
+
+    console.log(finded.time);
+
+
     fm.forEach((value,key) => {
         finded[key] = value
     });
-    console.log(finded);
     modal.style.display = "none"
+    if(target.querySelector(".body").lastElementChild.value.slice(0,2)> cur_time.slice(0,2)){
+        alert("Можно выбрать только прошлое")
+        finded.time = cur_time
+        modal.style.display = "block"
+    }else{
+        target.querySelector(".body").lastElementChild.value = q
+    }
     reload(todos)
+
 }
-console.log(checkbox);
-new Date().getHours() + ":" + new Date().getMinutes()
+
